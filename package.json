@@ -10,6 +10,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "hillo": "^2.0.31",
+    "html2canvas": "^1.4.1",
     "vue": "^2.6.11",
     "vuetify": "^2.6.0",
     "watermarkjs": "^2.1.1"
