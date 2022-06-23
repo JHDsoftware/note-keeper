@@ -21,6 +21,7 @@
           <v-textarea label="内容" name="body" v-model="content" counter="500"></v-textarea>
         </div>
         <v-btn download v-if="linkReady" ref="link" block color="primary" large elevation="0"
+               :href="imgUrl"
                class="mt-4">下载图片
         </v-btn>
         <v-btn v-else @click="sendMail" block dark large elevation="0" class="mt-4">
@@ -57,9 +58,6 @@ export default {
   methods: {
     sendMail () {
       this.linkReady = true
-      this.$nextTick(() => {
-        this.$refs.link.href = this.imgUrl
-      })
     },
     realSendMail () {
       window.open(`mailto:Haodong JU<juhaodong@gmail.com>?subject=${this.title}
