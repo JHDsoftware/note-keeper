@@ -18,35 +18,32 @@
               accept="image/*"
               label="上传图片"
           />
-          <v-text-field name="subject" v-model="title" label="标题"></v-text-field>
           <v-textarea label="内容" name="body" v-model="content" counter="500"></v-textarea>
         </div>
-        <v-btn download @click="realSendMail" v-if="linkReady" ref="link" block color="primary" large elevation="0"
+        <v-btn download v-if="linkReady" ref="link" block color="primary" large elevation="0"
                class="mt-4">下载图片
         </v-btn>
         <v-btn v-else @click="sendMail" block dark large elevation="0" class="mt-4">
           生成
           <v-icon right>mdi-send</v-icon>
         </v-btn>
-
-
       </v-col>
-
-
     </v-row>
   </v-container>
 </template>
 
-<script>
-
-/**
+<script>/**
  *
  * @param file
  * @returns {string}
  */
+import { text } from 'watermarkjs/lib/style'
+
 function uploadImg (file) {
   return URL.createObjectURL(file)
 }
+
+import watermark from 'watermarkjs/lib'
 
 
 export default {
@@ -62,11 +59,7 @@ export default {
       this.linkReady = true
       this.$nextTick(() => {
         this.$refs.link.href = this.imgUrl
-
-
       })
-
-
     },
     realSendMail () {
       window.open(`mailto:Haodong JU<juhaodong@gmail.com>?subject=${this.title}
@@ -75,13 +68,22 @@ ${this.content}\n
 !!Please select image!!
 
 `)
+    },
+    async refreshPicture () {
+      console.log(this.content)
+      const newImg = await watermark([this.file]).blob(text.lowerLeft(this.content, "96px", '#fff', 1))
+      console.log(newImg)
+      const currentUrl = (uploadImg(newImg))
+      console.log(currentUrl)
+      this.imgUrl = currentUrl
     }
   },
   watch: {
-    async file (val) {
-      const currentUrl = (uploadImg(val))
-      console.log(currentUrl)
-      this.imgUrl = currentUrl
+    async file () {
+      this.refreshPicture()
+    },
+    async content () {
+      this.refreshPicture()
     }
   },
   computed: {
