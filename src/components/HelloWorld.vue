@@ -78,6 +78,17 @@ export default {
 
     }
   },
+  watch:{
+    title(){
+      this.linkReady=false
+    },
+    content(){
+      this.linkReady=false
+    },
+    file(){
+      this.linkReady=false
+    }
+  },
   computed: {
     uploadUrl: function () {
       console.log(this.file)
